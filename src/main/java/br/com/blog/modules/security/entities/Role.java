@@ -22,6 +22,10 @@ public class Role {
         this.id = id;
         this.roleName = roleName;
     }
+    
+    public Role() {
+        
+    }
 
     public Long getId() {
         return id;
