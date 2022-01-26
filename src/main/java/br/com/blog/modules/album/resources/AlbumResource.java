@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,15 +35,20 @@ public class AlbumResource {
     }
     
     @PostMapping("/albums")
-    public ResponseEntity<Album> saveAlbum(@RequestBody Album album) throws URISyntaxException{
-        
-        Album albumSaved = albumService.saveAlbums(album);
-        
-        return ResponseEntity.created(new URI("/album/albums/" + albumSaved.getId())).body(albumSaved);
+    public ResponseEntity<Album> saveAlbum(@RequestBody Album album) throws URISyntaxException {
+        try {
+
+            Album albumSaved = albumService.saveAlbums(album);
+            return ResponseEntity.created(new URI("/album/albums/" + albumSaved.getId())).body(albumSaved);
+
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
     }
     
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAlbum(@PathVariable Long id) {
+    @DeleteMapping("/delete/{idUser}/{id}")
+    public ResponseEntity<String> deletePost(@PathVariable Long idUser, @PathVariable Long id) {
 
         Optional<Album> album = albumService.findByIdAlbum(id);
 
@@ -50,8 +56,16 @@ public class AlbumResource {
             return ResponseEntity.notFound().build();
         }
 
-        albumService.deleteAlbums(id);
+        try {
+
+            albumService.deleteAlbumById(idUser, id);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
         return ResponseEntity.noContent().build();
+
     }
 
 }

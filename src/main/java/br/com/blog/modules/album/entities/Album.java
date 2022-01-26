@@ -3,6 +3,7 @@ package br.com.blog.modules.album.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,12 +20,12 @@ public class Album {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String name;
-    
     @Column(name = "user_id")
     private Long idUser;
     
-    @OneToMany(mappedBy = "idAlbum")
+    private String name;
+ 
+    @OneToMany(mappedBy = "idAlbum", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Photo> photos = new ArrayList<>();
 
     public Long getId() {

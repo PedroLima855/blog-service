@@ -3,6 +3,7 @@ package br.com.blog.modules.post.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,17 +22,17 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @Column(name = "user_id")
+    private Long idUser;
+    
     private String text;
     
     private String images;
     
     private String links;
     
-    @OneToMany(mappedBy = "idPost")
+    @OneToMany(mappedBy = "idPost", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
-    
-    @Column(name = "user_id")
-    private Long idUser;
 
     public Long getId() {
         return id;

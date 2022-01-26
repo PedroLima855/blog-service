@@ -13,6 +13,8 @@ import br.com.blog.modules.album.repositories.AlbumRepository;
 @Service
 public class AlbumService {
     
+    private final String MESSAGE_DEFAULT_ALBUM = "This user does not have permission to delete this album";
+    
     @Autowired
     private AlbumRepository albumRepository;
     
@@ -29,8 +31,16 @@ public class AlbumService {
         return album;
     }
     
-    public void deleteAlbums(Long id) {
+    public void deleteAlbumById(Long idUser, Long id) {
+
+        Optional<Album> album = albumRepository.findById(id);
+
+        if (!album.get().getIdUser().equals(idUser)) {
+            throw new IllegalArgumentException(MESSAGE_DEFAULT_ALBUM);
+        }
+        
         albumRepository.deleteById(id);
+
     }
     
     public Optional<Album> findByIdAlbum(Long id) {

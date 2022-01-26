@@ -31,8 +31,8 @@ public class CommentResource {
         return ResponseEntity.created(new URI("/comment/comments/" + commentSaved.getId())).body(commentSaved);
     }
     
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
+    @DeleteMapping("/delete/{idUser}/{id}")
+    public ResponseEntity<String> deleteComment(@PathVariable Long idUser, @PathVariable Long id) {
 
         Optional<Comment> comment = commentService.findByIdComment(id);
 
@@ -40,8 +40,16 @@ public class CommentResource {
             return ResponseEntity.notFound().build();
         }
 
-        commentService.deleteCommentById(id);
+        try {
+
+            commentService.deleteCommentById(idUser, id);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
         return ResponseEntity.noContent().build();
+
     }
 
 
