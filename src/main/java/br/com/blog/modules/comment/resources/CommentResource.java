@@ -17,7 +17,7 @@ import br.com.blog.modules.comment.entities.Comment;
 import br.com.blog.modules.comment.services.CommentService;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/api/comment")
 public class CommentResource {
     
     @Autowired

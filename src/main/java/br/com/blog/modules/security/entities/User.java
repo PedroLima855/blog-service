@@ -1,6 +1,7 @@
 package br.com.blog.modules.security.entities;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -12,7 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import br.com.blog.modules.album.entities.Album;
+import br.com.blog.modules.comment.entities.Comment;
+import br.com.blog.modules.post.entities.Post;
 
 @Entity
 @Table(name = "users")
@@ -28,6 +34,15 @@ public class User {
     private String email;
     
     private String password;
+    
+    @OneToMany(mappedBy = "idUser")
+    private List<Post> posts;
+    
+    @OneToMany(mappedBy = "idUser")
+    private List<Comment> comments;
+    
+    @OneToMany(mappedBy = "idUser")
+    private List<Album> albums;
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_role",
@@ -81,6 +96,34 @@ public class User {
     
     public Set<Role> getRoles() {
         return roles;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     @Override

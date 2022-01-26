@@ -19,6 +19,9 @@ public class Comment {
     
     @Column(name = "post_id")
     private Long idPost;
+    
+    @Column(name = "user_id")
+    private Long idUser;
 
     public Long getId() {
         return id;
@@ -42,6 +45,14 @@ public class Comment {
 
     public void setIdPost(Long idPost) {
         this.idPost = idPost;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
 }

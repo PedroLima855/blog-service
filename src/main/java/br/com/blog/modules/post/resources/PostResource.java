@@ -18,7 +18,7 @@ import br.com.blog.modules.post.entities.Post;
 import br.com.blog.modules.post.services.PostService;
 
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/api/post")
 public class PostResource {
 
     @Autowired

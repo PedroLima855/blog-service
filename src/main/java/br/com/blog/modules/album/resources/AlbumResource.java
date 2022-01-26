@@ -21,7 +21,7 @@ import br.com.blog.modules.album.entities.Album;
 import br.com.blog.modules.album.services.AlbumService;
 
 @RestController
-@RequestMapping("/album")
+@RequestMapping("/api/album")
 public class AlbumResource {
     
     @Autowired

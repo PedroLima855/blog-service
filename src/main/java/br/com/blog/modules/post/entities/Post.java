@@ -3,6 +3,7 @@ package br.com.blog.modules.post.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +29,9 @@ public class Post {
     
     @OneToMany(mappedBy = "idPost")
     private List<Comment> comments = new ArrayList<>();
+    
+    @Column(name = "user_id")
+    private Long idUser;
 
     public Long getId() {
         return id;
@@ -67,6 +71,14 @@ public class Post {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
 }

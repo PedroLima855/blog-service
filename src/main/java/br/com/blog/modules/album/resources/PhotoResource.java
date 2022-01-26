@@ -14,7 +14,7 @@ import br.com.blog.modules.album.entities.Photo;
 import br.com.blog.modules.album.services.PhotoService;
 
 @RestController
-@RequestMapping("/photo")
+@RequestMapping("/api/photo")
 public class PhotoResource {
     
     @Autowired

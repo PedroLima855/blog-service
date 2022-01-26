@@ -3,6 +3,7 @@ package br.com.blog.modules.album.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,9 @@ public class Album {
     private Long id;
     
     private String name;
+    
+    @Column(name = "user_id")
+    private Long idUser;
     
     @OneToMany(mappedBy = "idAlbum")
     private List<Photo> photos = new ArrayList<>();
@@ -45,6 +49,14 @@ public class Album {
 
     public void setPhotos(List<Photo> photos) {
         this.photos = photos;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
 }
