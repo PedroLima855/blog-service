@@ -3,9 +3,11 @@ package br.com.blog.modules.security.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.blog.modules.security.entities.User;
@@ -18,8 +20,21 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
     
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+    
     public Optional<User> findByIdUser(Long id) {
         return userRepository.findById(id);
+    }
+    
+    public User saveUsers(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        try {
+            user = userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException(e.getMessage());
+        }
+        return user;
     }
     
     @Override
@@ -30,7 +45,6 @@ public class UserService implements UserDetailsService {
         userResponse.setId(user.getId());
         userResponse.setName(user.getName());
         userResponse.setPassword(user.getPassword());
-        userResponse.setRoles(user.getRoles());
         return  userResponse;
     }
     

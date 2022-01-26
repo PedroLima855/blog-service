@@ -1,18 +1,13 @@
 package br.com.blog.modules.security.entities;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -36,20 +31,13 @@ public class User {
     private String password;
     
     @OneToMany(mappedBy = "idUser")
-    private List<Post> posts;
+    private List<Post> posts = new ArrayList<>();
     
     @OneToMany(mappedBy = "idUser")
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
     
     @OneToMany(mappedBy = "idUser")
-    private List<Album> albums;
-    
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_role",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "role_id")          
-    )
-    private Set<Role> roles = new HashSet<>();
+    private List<Album> albums = new ArrayList<>();
 
     public User(Long id, String name, String email, String password) {
         this.id = id;
@@ -58,8 +46,7 @@ public class User {
         this.password = password;
     }
     
-    public User() {
-        
+    public User() {   
     }
 
     public Long getId() {
@@ -93,10 +80,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    public Set<Role> getRoles() {
-        return roles;
-    }
 
     public List<Post> getPosts() {
         return posts;
@@ -120,10 +103,6 @@ public class User {
 
     public void setAlbums(List<Album> albums) {
         this.albums = albums;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 
     @Override
