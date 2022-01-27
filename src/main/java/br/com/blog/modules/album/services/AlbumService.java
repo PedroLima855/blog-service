@@ -40,7 +40,6 @@ public class AlbumService {
         }
         
         albumRepository.deleteById(id);
-
     }
     
     public Optional<Album> findByIdAlbum(Long id) {

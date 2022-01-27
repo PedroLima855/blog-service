@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,18 +20,23 @@ import br.com.blog.modules.comment.services.CommentService;
 @RestController
 @RequestMapping("/api/comment")
 public class CommentResource {
-    
+
     @Autowired
     private CommentService commentService;
-    
+
     @PostMapping("/comments")
-    public ResponseEntity<Comment> saveComment(@RequestBody Comment comment) throws URISyntaxException{
-        
-        Comment commentSaved = commentService.saveComment(comment);
-        
-        return ResponseEntity.created(new URI("/comment/comments/" + commentSaved.getId())).body(commentSaved);
+    public ResponseEntity<Comment> saveAlbum(@RequestBody Comment comment) throws URISyntaxException {
+        try {
+
+            Comment commentSaved = commentService.saveComments(comment);
+            return ResponseEntity.created(new URI("/comment/comments/" + commentSaved.getId())).body(commentSaved);
+
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.badRequest().build();
+        }
+
     }
-    
+
     @DeleteMapping("/delete/{idUser}/{id}")
     public ResponseEntity<String> deleteComment(@PathVariable Long idUser, @PathVariable Long id) {
 
@@ -51,6 +57,5 @@ public class CommentResource {
         return ResponseEntity.noContent().build();
 
     }
-
 
 }

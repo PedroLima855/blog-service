@@ -17,7 +17,7 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
     
-    public Comment saveComment(Comment comment) {
+    public Comment saveComments(Comment comment) {
         try {
             comment = commentRepository.save(comment);
         } catch (DataIntegrityViolationException e) {
