@@ -13,12 +13,17 @@ import org.springframework.stereotype.Service;
 import br.com.blog.modules.security.entities.User;
 import br.com.blog.modules.security.entities.UserResponse;
 import br.com.blog.modules.security.repositories.UserRepository;
+import br.com.blog.modules.security.services.dto.UserAssembler;
+import br.com.blog.modules.security.services.dto.UserDTO;
 
 @Service
 public class UserService implements UserDetailsService {
     
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private UserAssembler userAssembler;
     
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
@@ -50,6 +55,14 @@ public class UserService implements UserDetailsService {
     
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+    
+    public UserDTO findByEmailUserDto(String email) throws Exception {
+        try {
+            return userAssembler.toDTO(userRepository.findByEmail(email));
+        } catch (Exception e) {
+            throw new Exception("User not found");
+        }
     }
 
 }

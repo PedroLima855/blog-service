@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.blog.modules.security.entities.User;
 import br.com.blog.modules.security.services.UserService;
+import br.com.blog.modules.security.services.dto.UserDTO;
 
 @RestController
 @RequestMapping("/api/user")
@@ -49,6 +51,20 @@ public class UserResource {
             return ResponseEntity.badRequest().build();
         }
 
+    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<UserDTO> findByEmailUserDto(@RequestParam String email) {
+        
+        try {
+            
+            UserDTO userDto = userService.findByEmailUserDto(email);
+            return ResponseEntity.ok(userDto);
+            
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+        
     }
 
 }
